@@ -1,6 +1,10 @@
 import React from "react";
 import Button from "../ui/Button";
 import InputComponent from "../ui/Input";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { createProject } from "./../../services/ProjectServices";
+
 class NewProject extends React.Component {
   constructor(props) {
     super(props);
@@ -23,7 +27,14 @@ class NewProject extends React.Component {
 
   onSubmit(event) {
     event.preventDefault();
-    console.log(this.state);
+    const newProject = {
+      projectName: this.state.projectName,
+      projectIdentifier: this.state.projectIdentifier,
+      description: this.state.description,
+      startDate: this.state.startDate,
+      enddate: this.state.endDate
+    };
+    this.props.createProject(newProject, this.props.history);
   }
 
   render() {
@@ -79,4 +90,8 @@ class NewProject extends React.Component {
   }
 }
 
-export default NewProject;
+NewProject.propTypes = {
+  createProject: PropTypes.func.isRequired
+};
+
+export default connect(null, { createProject })(NewProject);
