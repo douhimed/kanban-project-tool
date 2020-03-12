@@ -1,4 +1,5 @@
 import React from "react";
+import LinkComponent from "../ui/Link";
 
 class Header extends React.Component {
   state = {};
@@ -9,13 +10,18 @@ class Header extends React.Component {
           Kanban Project Management Tool
         </h5>
         <nav className="my-2 my-md-0 mr-md-3">
-          <a className="p-2 text-dark" href="#">
-            Dashboard
-          </a>
+          <LinkComponent
+            classes="p-2 text-dark"
+            to="/projects"
+            label="Dashboard"
+          />
         </nav>
-        <a className="btn btn-outline-primary" href="#">
-          Sign up
-        </a>
+
+        <LinkComponent
+          classes="btn btn-outline-primary"
+          to="#"
+          label="Sign up"
+        />
       </div>
     );
   }
