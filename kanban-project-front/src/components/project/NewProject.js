@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { createProject } from "../../services/ProjectServices";
 import PropTypes from "prop-types";
 import TextInput from "../ui/TextInput";
+import Error from "../ui/Error";
 
 class NewProject extends React.Component {
   constructor(props) {
@@ -15,11 +16,18 @@ class NewProject extends React.Component {
       projectIdentifier: "",
       description: "",
       startDate: "",
-      endDate: ""
+      endDate: "",
+      errors: {}
     };
 
     this.onInputChangeHandler = this.onInputChangeHandler.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
   }
 
   onInputChangeHandler(event) {
@@ -39,6 +47,8 @@ class NewProject extends React.Component {
   }
 
   render() {
+    const { errors } = this.state;
+
     return (
       <div className="container">
         <h1>Create/Edit Project</h1>
@@ -51,6 +61,7 @@ class NewProject extends React.Component {
             value={this.state.name}
             name="name"
             onChangeHandler={this.onInputChangeHandler}
+            error={errors.name}
           />
           <InputComponent
             label="Identifier"
@@ -59,6 +70,7 @@ class NewProject extends React.Component {
             value={this.state.projectIdentifier}
             name="projectIdentifier"
             onChangeHandler={this.onInputChangeHandler}
+            error={errors.projectIdentifier}
           />
           <TextInput
             label="Description"
@@ -67,6 +79,7 @@ class NewProject extends React.Component {
             value={this.state.description}
             name="description"
             onChangeHandler={this.onInputChangeHandler}
+            error={errors.description}
           />
           <InputComponent
             label="Start Date"
@@ -92,7 +105,12 @@ class NewProject extends React.Component {
 }
 
 NewProject.protoTypes = {
-  createProject: PropTypes.func.isRequired
+  createProject: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
-export default connect(null, { createProject })(NewProject);
+const mapStateToProps = state => ({
+  errors: state.errors
+});
+
+export default connect(mapStateToProps, { createProject })(NewProject);
