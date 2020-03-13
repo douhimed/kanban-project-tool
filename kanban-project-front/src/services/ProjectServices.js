@@ -56,9 +56,11 @@ export const updateProject = (project, history) => async dispatch => {
 };
 
 export const deleteProject = identifier => async dispatch => {
-  await axios.delete(`${uri}/${identifier}`);
-  dispatch({
-    type: DELETE_PROJECT,
-    payload: identifier
-  });
+  if (window.confirm("Are you sure you want delete this project ? ")) {
+    await axios.delete(`${uri}/${identifier}`);
+    dispatch({
+      type: DELETE_PROJECT,
+      payload: identifier
+    });
+  }
 };
