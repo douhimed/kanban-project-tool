@@ -9,8 +9,7 @@ const TextInput = props => {
     classes += "is-invalid";
   }
 
-  const content =
-    props.value === "" ? PushSubscriptionOptions.placeholder : props.value;
+  const content = props.value === "" ? props.placeholder : props.value;
   return (
     <div className="form-group row">
       <label className="col-sm-2 col-form-label">{props.label}</label>
@@ -20,9 +19,8 @@ const TextInput = props => {
           rows="5"
           name={props.name}
           onChange={e => props.onChangeHandler(e)}
-        >
-          {content}
-        </textarea>
+          value={content}
+        />
         {error}
       </div>
     </div>

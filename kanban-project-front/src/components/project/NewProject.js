@@ -2,22 +2,27 @@ import React from "react";
 import Button from "../ui/Button";
 import InputComponent from "../ui/Input";
 import { connect } from "react-redux";
-import { createProject } from "../../services/ProjectServices";
+import {
+  createProject,
+  getProject,
+  updateProject
+} from "../../services/ProjectServices";
 import PropTypes from "prop-types";
 import TextInput from "../ui/TextInput";
-import Error from "../ui/Error";
 
 class NewProject extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      id: null,
       name: "",
       projectIdentifier: "",
       description: "",
       startDate: "",
       endDate: "",
-      errors: {}
+      errors: {},
+      isNew: true
     };
 
     this.onInputChangeHandler = this.onInputChangeHandler.bind(this);
@@ -28,6 +33,32 @@ class NewProject extends React.Component {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
+
+    const {
+      id,
+      name,
+      projectIdentifier,
+      description,
+      startDate,
+      endDate
+    } = nextProps.project;
+
+    this.setState({
+      id,
+      name,
+      projectIdentifier,
+      description,
+      startDate,
+      endDate
+    });
+  }
+
+  componentDidMount() {
+    const { id } = this.props.match.params;
+    if (id) {
+      this.setState({ isNew: false });
+      this.props.getProject(id, this.props.history);
+    }
   }
 
   onInputChangeHandler(event) {
@@ -37,18 +68,19 @@ class NewProject extends React.Component {
   onSubmit(event) {
     event.preventDefault();
     const project = {
+      id: this.state.id,
       name: this.state.name,
       projectIdentifier: this.state.projectIdentifier,
       description: this.state.description,
       startDate: this.state.startDate,
       endDate: this.state.endDate
     };
-    this.props.createProject(project, this.props.history);
+    if (this.state.isNew) this.props.createProject(project, this.props.history);
+    else this.props.updateProject(project, this.props.history);
   }
 
   render() {
     const { errors } = this.state;
-
     return (
       <div className="container">
         <h1>Create/Edit Project</h1>
@@ -63,15 +95,19 @@ class NewProject extends React.Component {
             onChangeHandler={this.onInputChangeHandler}
             error={errors.name}
           />
-          <InputComponent
-            label="Identifier"
-            type="text"
-            placeholder="Project Identifier"
-            value={this.state.projectIdentifier}
-            name="projectIdentifier"
-            onChangeHandler={this.onInputChangeHandler}
-            error={errors.projectIdentifier}
-          />
+          {this.state.isNew && (
+            <InputComponent
+              label="Identifier"
+              type="text"
+              placeholder="Project Identifier"
+              value={this.state.projectIdentifier}
+              name="projectIdentifier"
+              onChangeHandler={this.onInputChangeHandler}
+              error={errors.projectIdentifier}
+              disabled={this.state.isNew}
+            />
+          )}
+
           <TextInput
             label="Description"
             type="text"
@@ -106,11 +142,19 @@ class NewProject extends React.Component {
 
 NewProject.protoTypes = {
   createProject: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  getProject: PropTypes.func.isRequired,
+  updateProject: PropTypes.func.isRequired,
+  project: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  errors: state.errors
+  errors: state.errors,
+  project: state.project.project
 });
 
-export default connect(mapStateToProps, { createProject })(NewProject);
+export default connect(mapStateToProps, {
+  createProject,
+  getProject,
+  updateProject
+})(NewProject);

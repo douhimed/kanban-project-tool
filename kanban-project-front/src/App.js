@@ -17,6 +17,7 @@ class App extends React.Component {
           <Header />
           <Route exact path="/projects" component={Dashboard} />
           <Route exact path="/projects/new" component={NewProject} />
+          <Route exact path="/projects/update/:id" component={NewProject} />
           <Route exact path="/" component={Dashboard} />
         </Router>
       </Provider>

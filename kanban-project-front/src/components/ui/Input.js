@@ -18,7 +18,7 @@ const InputComponent = props => {
           className={classes}
           placeholder={props.placeholder}
           name={props.name}
-          value={props.value}
+          value={props.value || ""}
           onChange={e => props.onChangeHandler(e)}
         />
         {error}
