@@ -1,12 +1,17 @@
 import React from "react";
 import Button from "../ui/Button";
 import InputComponent from "../ui/Input";
+import { connect } from "react-redux";
+import { createProject } from "../../services/ProjectServices";
+import PropTypes from "prop-types";
+import TextInput from "../ui/TextInput";
+
 class NewProject extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      projectName: "",
+      name: "",
       projectIdentifier: "",
       description: "",
       startDate: "",
@@ -23,7 +28,14 @@ class NewProject extends React.Component {
 
   onSubmit(event) {
     event.preventDefault();
-    console.log(this.state);
+    const project = {
+      name: this.state.name,
+      projectIdentifier: this.state.projectIdentifier,
+      description: this.state.description,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate
+    };
+    this.props.createProject(project, this.props.history);
   }
 
   render() {
@@ -36,8 +48,8 @@ class NewProject extends React.Component {
             label="Name"
             type="text"
             placeholder="Project Name"
-            value={this.state.projectName}
-            name="projectName"
+            value={this.state.name}
+            name="name"
             onChangeHandler={this.onInputChangeHandler}
           />
           <InputComponent
@@ -48,7 +60,7 @@ class NewProject extends React.Component {
             name="projectIdentifier"
             onChangeHandler={this.onInputChangeHandler}
           />
-          <InputComponent
+          <TextInput
             label="Description"
             type="text"
             placeholder="Project Description"
@@ -79,4 +91,8 @@ class NewProject extends React.Component {
   }
 }
 
-export default NewProject;
+NewProject.protoTypes = {
+  createProject: PropTypes.func.isRequired
+};
+
+export default connect(null, { createProject })(NewProject);
