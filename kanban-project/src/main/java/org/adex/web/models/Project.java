@@ -61,7 +61,7 @@ public class Project {
 	
 	@PrePersist
 	protected void onCreate() {
-		this.setCreatedAt(new Date()); 
+		this.setCreatedAt(new Date());
 	}
 	
 	@PreUpdate

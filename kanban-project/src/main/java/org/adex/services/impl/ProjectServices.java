@@ -3,9 +3,13 @@ package org.adex.services.impl;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.adex.repositories.BacklogRepository;
 import org.adex.repositories.ProjectRepository;
 import org.adex.services.IProjectServices;
 import org.adex.utilities.exceptions.id.ProjectIdException;
+import org.adex.web.models.Backlog;
 import org.adex.web.models.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,14 +22,26 @@ public class ProjectServices implements IProjectServices {
 	@Autowired
 	private ProjectRepository projectRepository;
 
+	@Autowired
+	private BacklogRepository backlogRepository;
+
 	@Override
 	public Project saveOrUpdate(Project project) {
+		String identifier = project.getProjectIdentifier().toUpperCase();
 		try {
-			project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+			project.setProjectIdentifier(identifier);
+			if(project.getId() == null){
+				Backlog backlog = new Backlog();
+				project.setBacklog(backlog);
+				backlog.setProject(project);
+				backlog.setProjectIdentifier(identifier);
+			}else if(project.getId() != null){
+				project.setBacklog(this.backlogRepository.findByProjectIdentifier(identifier));
+			}
 			return this.projectRepository.save(project);
 		} catch (Exception e) {
 			throw new ProjectIdException(
-					"Project identifier : " + project.getProjectIdentifier() + " already exist");
+					"Project identifier : " + identifier + " already exist");
 		}
 	}
 
