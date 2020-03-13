@@ -1,5 +1,6 @@
 package org.adex.web.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,6 +34,11 @@ public class Task {
     private Date createdAt;
     private Date updatedAt;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "backlogId", updatable = false, nullable = false)
+    @JsonIgnore
+    private Backlog backlog;
+
     @PrePersist
     protected void onCreate() {
         this.setCreatedAt(new Date());
@@ -42,4 +48,5 @@ public class Task {
     protected void onUpdate() {
         this.setUpdatedAt(new Date());
     }
+
 }
