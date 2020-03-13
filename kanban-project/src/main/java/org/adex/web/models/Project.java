@@ -55,7 +55,7 @@ public class Project {
 	private Date updatedAt;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")
-
+	@ToString.Exclude
 	private Backlog backlog;
 	
 	

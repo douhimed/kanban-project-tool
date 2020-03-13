@@ -31,10 +31,8 @@ public class ProjectServices implements IProjectServices {
 		try {
 			project.setProjectIdentifier(identifier);
 			if(project.getId() == null){
-				Backlog backlog = new Backlog();
+				Backlog backlog = Backlog.builder().project(project).projectIdentifier(identifier).build();
 				project.setBacklog(backlog);
-				backlog.setProject(project);
-				backlog.setProjectIdentifier(identifier);
 			}else if(project.getId() != null){
 				project.setBacklog(this.backlogRepository.findByProjectIdentifier(identifier));
 			}

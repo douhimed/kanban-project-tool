@@ -37,6 +37,7 @@ public class Task {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "backlogId", updatable = false, nullable = false)
     @JsonIgnore
+    @ToString.Exclude
     private Backlog backlog;
 
     @PrePersist
