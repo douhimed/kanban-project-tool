@@ -1,40 +1,50 @@
 import React from "react";
 import LinkComponent from "../ui/Link";
 import Button from "../ui/Button";
+import { connect } from "react-redux";
+import { deleteProject } from "../../services/ProjectServices";
+import PropTypes from "prop-types";
 
 class ProjectItem extends React.Component {
-  state = {};
+  onDeleteHandler = identifier => {
+    this.props.deleteProject(identifier);
+  };
+
   render() {
+    const { project } = this.props;
     return (
-      <React.Fragment>
-        <div className="row">
-          <div className="col-4">
-            <div className="card text-center mb-2">
-              <div className="card-header">Featured</div>
-              <div className="card-body">
-                <h5 className="card-title">Special title treatment</h5>
-                <p className="card-text">
-                  With supporting text below as a natural lead-in to additional
-                  content.
-                </p>
-                <LinkComponent
-                  classes="btn btn-success btn-sm m-2"
-                  to="#"
-                  label="Details"
-                />
-                <LinkComponent
-                  classes="btn btn-info btn-sm m-2"
-                  to="#"
-                  label="Details"
-                />
-                <Button classes="btn btn-danger btn-sm m-2" label="Delete" />
-              </div>
-            </div>
+      <div className="col-4">
+        <div className="card text-center mb-2">
+          <div className="card-header">{project.projectIdentifier}</div>
+          <div className="card-body">
+            <h5 className="card-title">{project.name}</h5>
+            <p className="card-text">
+              {project.description.substring(0, 100) + " ... "}
+            </p>
+            <LinkComponent
+              classes="btn btn-success btn-sm m-2"
+              to="#"
+              label="Details"
+            />
+            <LinkComponent
+              classes="btn btn-info btn-sm m-2"
+              to={"/projects/update/" + project.projectIdentifier}
+              label="Update"
+            />
+            <Button
+              classes="btn btn-danger btn-sm m-2"
+              label="Delete"
+              onAction={id => this.onDeleteHandler(project.projectIdentifier)}
+            />
           </div>
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }
 
-export default ProjectItem;
+ProjectItem.propTypes = {
+  deleteProject: PropTypes.func.isRequired
+};
+
+export default connect(null, { deleteProject })(ProjectItem);

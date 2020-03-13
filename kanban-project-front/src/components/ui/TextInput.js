@@ -1,7 +1,7 @@
 import React from "react";
 import Error from "./Error";
 
-const InputComponent = props => {
+const TextInput = props => {
   let classes = "form-control ";
   let error = null;
   if (props.error) {
@@ -9,17 +9,17 @@ const InputComponent = props => {
     classes += "is-invalid";
   }
 
+  const content = props.value === "" ? props.placeholder : props.value;
   return (
     <div className="form-group row">
       <label className="col-sm-2 col-form-label">{props.label}</label>
-      <div className="col-sm-6">
-        <input
-          type={props.type}
+      <div className="col-sm-10">
+        <textarea
           className={classes}
-          placeholder={props.placeholder}
+          rows="5"
           name={props.name}
-          value={props.value || ""}
           onChange={e => props.onChangeHandler(e)}
+          value={content}
         />
         {error}
       </div>
@@ -27,4 +27,4 @@ const InputComponent = props => {
   );
 };
 
-export default InputComponent;
+export default TextInput;
