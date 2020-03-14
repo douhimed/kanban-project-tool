@@ -9,4 +9,6 @@ public interface ITaskServices {
     Task addTask(String projectIdentifier, Task task);
 
     List<Task> findBacklogById(String backlogId);
+
+    Task findTaskByProjectSequence(String backlogId, String projectSequence);
 }

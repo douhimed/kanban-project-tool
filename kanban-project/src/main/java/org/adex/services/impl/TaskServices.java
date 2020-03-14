@@ -4,16 +4,15 @@ import org.adex.repositories.BacklogRepository;
 import org.adex.repositories.ProjectRepository;
 import org.adex.repositories.TaskRepository;
 import org.adex.services.ITaskServices;
-import org.adex.utilities.exceptions.id.ProjectNotFoundException;
+import org.adex.utilities.exceptions.ProjectNotFoundException;
+import org.adex.utilities.exceptions.TaskNotFoundException;
 import org.adex.web.models.Backlog;
 import org.adex.web.models.Project;
 import org.adex.web.models.Task;
-import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +33,6 @@ public class TaskServices implements ITaskServices {
     public Task addTask(String projectIdentifier, Task task) {
         try {
             Backlog backlog = this.backlogRepository.findByProjectIdentifier(projectIdentifier);
-            System.out.println(backlog);
             task.setBacklog(backlog);
             int backlogSequence = backlog.getPTSequence();
             backlogSequence++;
@@ -55,13 +53,30 @@ public class TaskServices implements ITaskServices {
 
     @Override
     public List<Task> findBacklogById(String backlogId) {
-
-        Optional<Project> optionalProject = this.projectRepository.findProjectByProjectIdentifier(backlogId);
-        if (optionalProject.isEmpty())
-            throw new ProjectNotFoundException("Project with the given ID does not exist");
-        return optionalProject.get().getBacklog().getTasks();
-
+        return getProject(backlogId).get().getBacklog().getTasks();
     }
 
 
+    @Override
+    public Task findTaskByProjectSequence(String backlogId, String projectSequence) {
+
+        this.getProject(backlogId).get().getBacklog().getTasks();
+
+        Optional<Task> optionalTask = this.taskRepository.findByProjectSequence(projectSequence);
+        if (optionalTask.isEmpty())
+            throw new TaskNotFoundException("Task with the given project sequence does not exist");
+
+        Task task = optionalTask.get();
+        if(!task.getProjectIdentifier().equals(backlogId))
+            throw new TaskNotFoundException("Task with the id "+ projectSequence +" does not exist in this project " + backlogId);
+        return task;
+
+    }
+
+    private Optional<Project> getProject(String backlogId) {
+        Optional<Project> optionalProject = this.projectRepository.findProjectByProjectIdentifier(backlogId);
+        if (optionalProject.isEmpty())
+            throw new ProjectNotFoundException("Project with the given ID does not exist");
+        return optionalProject;
+    }
 }

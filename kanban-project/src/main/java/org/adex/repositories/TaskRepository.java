@@ -11,4 +11,7 @@ import java.util.Optional;
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
     Optional<List<Task>> findByProjectIdentifierOrderByPriority(String identifier);
+
+    Optional<Task> findByProjectSequence(String projectSequence);
+
 }

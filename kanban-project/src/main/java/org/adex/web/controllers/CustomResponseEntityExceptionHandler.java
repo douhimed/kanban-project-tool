@@ -1,9 +1,6 @@
 package org.adex.web.controllers;
 
-import org.adex.utilities.exceptions.id.ProjectIdException;
-import org.adex.utilities.exceptions.id.ProjectIdExceptionResponse;
-import org.adex.utilities.exceptions.id.ProjectNotFoundException;
-import org.adex.utilities.exceptions.id.ProjectNotFoundExceptionResponse;
+import org.adex.utilities.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,6 +22,11 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 	@ExceptionHandler
 	public final ResponseEntity<Object> projectNotFoundExceptionHandler(ProjectNotFoundException ex, WebRequest request){
 		return new ResponseEntity<Object>(new ProjectNotFoundExceptionResponse(ex.getMessage()), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler
+	public final ResponseEntity<Object> taskNotFoundExceptionHandler(TaskNotFoundException ex, WebRequest request){
+		return new ResponseEntity<Object>(new TaskNotFoundExceptionResponce(ex.getMessage()), HttpStatus.BAD_REQUEST);
 	}
 	
 }

@@ -3,12 +3,10 @@ package org.adex.services.impl;
 import java.util.List;
 import java.util.Optional;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.adex.repositories.BacklogRepository;
 import org.adex.repositories.ProjectRepository;
 import org.adex.services.IProjectServices;
-import org.adex.utilities.exceptions.id.ProjectIdException;
+import org.adex.utilities.exceptions.ProjectIdException;
 import org.adex.web.models.Backlog;
 import org.adex.web.models.Project;
 import org.springframework.beans.factory.annotation.Autowired;

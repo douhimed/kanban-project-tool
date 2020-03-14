@@ -23,6 +23,11 @@ public class KanbanProjectApplication {
             Backlog b = Backlog.builder().project(p).projectIdentifier(p.getProjectIdentifier()).build();
             p.setBacklog(b);
             projectRepository.save(p);
+
+            p = Project.builder().name("test2 ").projectIdentifier("TEST2").description("project description").build();
+            b = Backlog.builder().project(p).projectIdentifier(p.getProjectIdentifier()).build();
+            p.setBacklog(b);
+            projectRepository.save(p);
         };
     }
 

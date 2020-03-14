@@ -1,4 +1,4 @@
-package org.adex.utilities.exceptions.id;
+package org.adex.utilities.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,8 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ProjectIdExceptionResponse {
+public class ProjectNotFoundExceptionResponse {
 	
-	private String projectIdentifier;
+	private String projectNotFounds;
 
 }
