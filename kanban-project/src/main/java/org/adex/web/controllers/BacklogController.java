@@ -37,10 +37,25 @@ public class BacklogController {
         return new ResponseEntity<List<Task>>(this.taskServices.findBacklogById(backlogId), HttpStatus.OK);
     }
 
-    @GetMapping("/{backlogId}/{projectId}")
-    public ResponseEntity<?> getBackLog(@PathVariable String backlogId, @PathVariable String projectId){
-        return new ResponseEntity<Task>(this.taskServices.findTaskByProjectSequence(backlogId, projectId), HttpStatus.OK);
+    @GetMapping("/{backlogId}/{taskId}")
+    public ResponseEntity<?> getBackLog(@PathVariable String backlogId, @PathVariable String taskId){
+        return new ResponseEntity<Task>(this.taskServices.findTaskByProjectSequence(backlogId, taskId), HttpStatus.OK);
     }
 
+    @PutMapping("/{backlogId}/{taskId}")
+    public ResponseEntity<?> updateTask(@Valid @RequestBody Task task, BindingResult result, @PathVariable String backlogId, @PathVariable String taskId) {
+
+        Optional<ResponseEntity<Map<String, String>>> errorsOptional = this.errorServices.validate(result);
+        if (errorsOptional.isPresent())
+            return errorsOptional.get();
+
+        Task updatedTask = this.taskServices.updateTaskByProjectSequence(task, backlogId, taskId);
+        return new ResponseEntity<Task>(updatedTask, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{backlogId}/{taskId}")
+    public ResponseEntity<?> deleteTask(@PathVariable String backlogId, @PathVariable String taskId){
+        return new ResponseEntity<Task>(this.taskServices.deleteBySequence(backlogId, taskId), HttpStatus.OK);
+    }
 
 }

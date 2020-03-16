@@ -67,10 +67,25 @@ public class TaskServices implements ITaskServices {
             throw new TaskNotFoundException("Task with the given project sequence does not exist");
 
         Task task = optionalTask.get();
-        if(!task.getProjectIdentifier().equals(backlogId))
-            throw new TaskNotFoundException("Task with the id "+ projectSequence +" does not exist in this project " + backlogId);
+        if (!task.getProjectIdentifier().equals(backlogId))
+            throw new TaskNotFoundException("Task with the id " + projectSequence + " does not exist in this project " + backlogId);
+
         return task;
 
+    }
+
+    @Override
+    public Task updateTaskByProjectSequence(Task updatedTask, String backlogSequence, String taskId) {
+        Task oldTask = this.findTaskByProjectSequence(backlogSequence, taskId);
+        oldTask = updatedTask;
+        return this.taskRepository.save(oldTask);
+    }
+
+    @Override
+    public Task deleteBySequence(String backlogId, String taskId) {
+        Task deletedTask = this.findTaskByProjectSequence(backlogId, taskId);
+        this.taskRepository.delete(deletedTask);
+        return deletedTask;
     }
 
     private Optional<Project> getProject(String backlogId) {

@@ -11,4 +11,8 @@ public interface ITaskServices {
     List<Task> findBacklogById(String backlogId);
 
     Task findTaskByProjectSequence(String backlogId, String projectSequence);
+
+    Task updateTaskByProjectSequence(Task updatedTask, String backlogSequence, String taskId);
+
+    Task deleteBySequence(String backlogId, String taskId);
 }
