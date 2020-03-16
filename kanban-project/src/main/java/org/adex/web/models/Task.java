@@ -34,7 +34,7 @@ public class Task {
     private Date createdAt;
     private Date updatedAt;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "backlogId", updatable = false, nullable = false)
     @JsonIgnore
     @ToString.Exclude
