@@ -10,8 +10,13 @@ const Task = props => {
   const classes = priorities[task.priority - 1];
 
   return (
-    <div className={"card mb-3"}>
-      <div className={"card-header bg-" + classes}>Header</div>
+    <div className="card mb-3">
+      <div className="card-header d-flex justify-content-between">
+        <span className="badge badge-info">{task.projectSequence}</span>
+        <span className={"badge badge-" + classes}>
+          {"Priority : " + task.priority}
+        </span>
+      </div>
       <div className="card-body">
         <h5 className="card-title">{task.summary}</h5>
         <p className="card-text">{task.acceptanceCriteria}</p>

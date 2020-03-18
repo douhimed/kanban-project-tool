@@ -84,7 +84,7 @@ class NewProject extends React.Component {
     const { errors } = this.state;
     return (
       <div className="container">
-        <div class="d-flex justify-content-between align-self-baseline">
+        <div className="d-flex justify-content-between align-self-baseline">
           <h3>Create/Edit Project</h3>
           <LinkComponent
             classes="btn btn-warning"
