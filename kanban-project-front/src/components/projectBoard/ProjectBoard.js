@@ -29,26 +29,6 @@ class ProjectBoard extends Component {
   render() {
     const { id } = this.props.match.params;
 
-    const { errors } = this.state;
-
-    let dashboard = null;
-
-    if (errors.projectNotFounds)
-      dashboard = (
-        <Alert message={this.props.errors.projectNotFounds} classes="danger" />
-      );
-    else if (this.props.backlog.tasks.length < 1)
-      dashboard = (
-        <Alert message="NOTTASKS AVAILABLE FOR THIS PROJECT" classes="info" />
-      );
-    else
-      dashboard = (
-        <Aux>
-          <ProjectBoardHead />
-          <Backlog tasks={this.props.backlog.tasks} />
-        </Aux>
-      );
-
     return (
       <div className="container">
         <div className="d-flex justify-content-between align-self-baseline">
@@ -64,9 +44,30 @@ class ProjectBoard extends Component {
           />
         </div>
         <hr />
-        {dashboard}
+        {this.getTheDashboard()}
       </div>
     );
+  }
+
+  getTheDashboard() {
+    const { errors } = this.state;
+    let dashboard = null;
+    if (errors.projectNotFounds)
+      dashboard = (
+        <Alert message={this.props.errors.projectNotFounds} classes="danger" />
+      );
+    else if (this.props.backlog.tasks.length < 1)
+      dashboard = (
+        <Alert message="NOT TASKS AVAILABLE FOR THIS PROJECT" classes="info" />
+      );
+    else
+      dashboard = (
+        <Aux>
+          <ProjectBoardHead />
+          <Backlog tasks={this.props.backlog.tasks} />
+        </Aux>
+      );
+    return dashboard;
   }
 }
 

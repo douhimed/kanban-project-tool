@@ -15,7 +15,9 @@ class ProjectItem extends React.Component {
     return (
       <div className="col-4">
         <div className="card text-center mb-2">
-          <div className="card-header">{project.projectIdentifier}</div>
+          <div className="card-header bg-warning">
+            {project.projectIdentifier}
+          </div>
           <div className="card-body">
             <h5 className="card-title">{project.name}</h5>
             <p className="card-text">
@@ -24,15 +26,15 @@ class ProjectItem extends React.Component {
             <LinkComponent
               classes="btn btn-success btn-sm m-2"
               to={`/projects/${project.projectIdentifier}`}
-              label="Board"
+              label="Project Board"
             />
             <LinkComponent
-              classes="btn btn-success btn-sm m-2"
+              classes="btn btn-secondary btn-sm m-2"
               to={`/projects/update/${project.projectIdentifier}`}
               label="Update"
             />
             <Button
-              classes="btn btn-warning btn-sm m-2"
+              classes="btn btn-danger btn-sm m-2"
               label="Delete"
               onAction={id => this.onDeleteHandler(project.projectIdentifier)}
             />
