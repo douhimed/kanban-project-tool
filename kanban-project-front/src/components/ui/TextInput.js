@@ -9,17 +9,17 @@ const TextInput = props => {
     classes += "is-invalid";
   }
 
-  const content = props.value === "" ? props.placeholder : props.value;
   return (
     <div className="form-group row">
-      <label className="col-sm-2 col-form-label">{props.label}</label>
-      <div className="col-sm-10">
+      <label className="col-sm-4 col-form-label">{props.label}</label>
+      <div className="col-sm-8">
         <textarea
           className={classes}
           rows="5"
           name={props.name}
           onChange={e => props.onChangeHandler(e)}
-          value={content}
+          placeholder={props.placeholder}
+          value={props.value}
         />
         {error}
       </div>

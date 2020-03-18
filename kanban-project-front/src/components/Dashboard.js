@@ -16,7 +16,7 @@ class Dashboard extends Component {
     return (
       <div className="container">
         <LinkComponent
-          classes="btn btn-outline-primary"
+          classes="btn btn-info"
           to="/projects/new"
           label="New Project"
         />

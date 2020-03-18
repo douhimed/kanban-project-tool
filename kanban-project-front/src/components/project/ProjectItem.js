@@ -23,16 +23,16 @@ class ProjectItem extends React.Component {
             </p>
             <LinkComponent
               classes="btn btn-success btn-sm m-2"
-              to="#"
-              label="Details"
+              to={`/projects/${project.projectIdentifier}`}
+              label="Board"
             />
             <LinkComponent
-              classes="btn btn-info btn-sm m-2"
-              to={"/projects/update/" + project.projectIdentifier}
+              classes="btn btn-success btn-sm m-2"
+              to={`/projects/update/${project.projectIdentifier}`}
               label="Update"
             />
             <Button
-              classes="btn btn-danger btn-sm m-2"
+              classes="btn btn-warning btn-sm m-2"
               label="Delete"
               onAction={id => this.onDeleteHandler(project.projectIdentifier)}
             />
