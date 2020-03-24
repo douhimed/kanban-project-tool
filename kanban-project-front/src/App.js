@@ -19,6 +19,11 @@ class App extends React.Component {
           <Header />
           <Switch>
             <Route exact path="/tasks/new/:id" component={TaskForm} />
+            <Route
+              exact
+              path="/tasks/update/:id/:taskId"
+              component={TaskForm}
+            />
             <Route exact path="/projects/update/:id" component={NewProject} />
             <Route exact path="/projects/new" component={NewProject} />
             <Route exact path="/projects/:id" component={ProjectBoard} />

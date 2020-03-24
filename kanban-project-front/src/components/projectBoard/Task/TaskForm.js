@@ -3,7 +3,11 @@ import InputComponent from "../../ui/Input";
 import Button from "../../ui/Button";
 import TextInput from "../../ui/TextInput";
 import { connect } from "react-redux";
-import { addProjectTask } from "../../../services/BacklogServices";
+import {
+  addProjectTask,
+  getTask,
+  updateProjectTask
+} from "../../../services/BacklogServices";
 import PropTypes from "prop-types";
 import Select from "../../ui/Select";
 import LinkComponent from "../../ui/Link";
@@ -29,19 +33,59 @@ class TaskForm extends Component {
     const { id } = this.props.match.params;
 
     this.state = {
+      id: null,
+      projectSequence: null,
       summary: "",
       acceptanceCriteria: "",
       status: "",
-      priority: 0,
-      dueDate: "",
+      priority: "",
+      dueDate: null,
       projectIdentifier: id,
-      errors: {}
+      createdAt: null,
+      errors: {},
+      isNew: true
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
+    }
+
+    const {
+      id,
+      summary,
+      acceptanceCriteria,
+      status,
+      priority,
+      dueDate,
+      createdAt,
+      projectSequence,
+      projectIdentifier
+    } = nextProps.task;
+
+    this.setState({
+      id,
+      summary,
+      acceptanceCriteria,
+      status,
+      priority,
+      dueDate,
+      createdAt,
+      projectSequence,
+      projectIdentifier
+    });
+  }
+
+  componentDidMount() {
+    const { taskId } = this.props.match.params;
+    if (taskId) {
+      this.setState({ isNew: false });
+      this.props.getTask(
+        this.state.projectIdentifier,
+        taskId,
+        this.props.history
+      );
     }
   }
 
@@ -56,13 +100,24 @@ class TaskForm extends Component {
       acceptanceCriteria: this.state.acceptanceCriteria,
       status: this.state.status,
       priority: this.state.priority,
-      dueDate: this.state.dueDate
+      dueDate: this.state.dueDate,
+      id: this.state.id,
+      createdAt: this.state.createdAt,
+      projectSequence: this.state.projectSequence,
+      projectIdentifier: this.state.projectIdentifier
     };
-    this.props.addProjectTask(
-      this.state.projectIdentifier,
-      task,
-      this.props.history
-    );
+    if (this.state.isNew)
+      this.props.addProjectTask(
+        this.state.projectIdentifier,
+        task,
+        this.props.history
+      );
+    else
+      this.props.updateProjectTask(
+        this.state.projectIdentifier,
+        task,
+        this.props.history
+      );
   };
 
   render() {
@@ -70,7 +125,7 @@ class TaskForm extends Component {
 
     return (
       <div className="container">
-        <div class="d-flex justify-content-between align-self-baseline">
+        <div className="d-flex justify-content-between align-self-baseline">
           <h3>Create/Edit Task</h3>
           <LinkComponent
             classes="btn btn-warning"
@@ -129,11 +184,18 @@ class TaskForm extends Component {
 
 TaskForm.propTypes = {
   addProjectTask: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  getTask: PropTypes.func.isRequired,
+  updateProjectTask: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  errors: state.errors
+  errors: state.errors,
+  task: state.backlog.task
 });
 
-export default connect(mapStateToProps, { addProjectTask })(TaskForm);
+export default connect(mapStateToProps, {
+  addProjectTask,
+  getTask,
+  updateProjectTask
+})(TaskForm);

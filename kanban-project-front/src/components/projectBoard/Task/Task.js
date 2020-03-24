@@ -22,7 +22,7 @@ const Task = props => {
         <p className="card-text">{task.acceptanceCriteria}</p>
         <LinkComponent
           classes="btn btn-secondary btn-sm m-2"
-          to={`/projects/update/${task.id}`}
+          to={`/tasks/update/${task.projectIdentifier}/${task.projectSequence}`}
           label="Update"
         />
         <Button
