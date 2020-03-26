@@ -9,6 +9,7 @@ import {
 } from "../../services/ProjectServices";
 import PropTypes from "prop-types";
 import TextInput from "../ui/TextInput";
+import LinkComponent from "../ui/Link";
 
 class NewProject extends React.Component {
   constructor(props) {
@@ -83,7 +84,14 @@ class NewProject extends React.Component {
     const { errors } = this.state;
     return (
       <div className="container">
-        <h1>Create/Edit Project</h1>
+        <div className="d-flex justify-content-between align-self-baseline">
+          <h3>Create/Edit Project</h3>
+          <LinkComponent
+            classes="btn btn-warning"
+            to={"/projects"}
+            label="Back To  Dashboard"
+          />
+        </div>
         <hr />
         <form onSubmit={this.onSubmit}>
           <InputComponent
@@ -133,7 +141,7 @@ class NewProject extends React.Component {
             name="endDate"
             onChangeHandler={this.onInputChangeHandler}
           />
-          <Button classes="btn btn-primary" label="Submit" />
+          <Button classes="btn btn-info" label="Submit" />
         </form>
       </div>
     );

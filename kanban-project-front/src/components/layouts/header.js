@@ -17,11 +17,7 @@ class Header extends React.Component {
           />
         </nav>
 
-        <LinkComponent
-          classes="btn btn-outline-primary"
-          to="#"
-          label="Sign up"
-        />
+        <LinkComponent classes="btn btn-outline-info" to="#" label="Sign up" />
       </div>
     );
   }

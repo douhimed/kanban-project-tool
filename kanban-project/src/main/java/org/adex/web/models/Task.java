@@ -1,5 +1,6 @@
 package org.adex.web.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -26,6 +27,7 @@ public class Task {
     private String acceptanceCriteria;
     private String status;
     private Integer priority;
+    @JsonFormat(pattern="yyyy-mm-dd")
     private Date dueDate;
 
     @Column(updatable = false)

@@ -40,7 +40,7 @@ public class TaskServices implements ITaskServices {
             task.setProjectSequence(projectIdentifier + "-" + backlogSequence);
             task.setProjectIdentifier(projectIdentifier);
 
-            if (task.getPriority() == null)
+            if (task.getPriority() == 0 || task.getPriority() == null)
                 task.setPriority(3);
 
             if (task.getStatus() == "" || task.getStatus() == null)
