@@ -11,8 +11,8 @@ const InputComponent = props => {
 
   return (
     <div className="form-group row">
-      <label className="col-sm-2 col-form-label">{props.label}</label>
-      <div className="col-sm-6">
+      <label className="col-sm-4 col-form-label">{props.label}</label>
+      <div className="col-sm-8">
         <input
           type={props.type}
           className={classes}
