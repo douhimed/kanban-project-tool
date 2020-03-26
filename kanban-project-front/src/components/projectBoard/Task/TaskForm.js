@@ -30,15 +30,15 @@ class TaskForm extends Component {
   constructor(props) {
     super(props);
 
-    const { id } = this.props.match.params;
+    const { id, taskId } = this.props.match.params;
 
     this.state = {
-      id: null,
-      projectSequence: null,
+      id: 0,
+      projectSequence: taskId ? taskId : 0,
       summary: "",
       acceptanceCriteria: "",
       status: "",
-      priority: "",
+      priority: 0,
       dueDate: null,
       projectIdentifier: id,
       createdAt: null,
@@ -52,35 +52,37 @@ class TaskForm extends Component {
       this.setState({ errors: nextProps.errors });
     }
 
-    const {
-      id,
-      summary,
-      acceptanceCriteria,
-      status,
-      priority,
-      dueDate,
-      createdAt,
-      projectSequence,
-      projectIdentifier
-    } = nextProps.task;
+    if (!this.state.isNew) {
+      const {
+        id,
+        summary,
+        acceptanceCriteria,
+        status,
+        priority,
+        dueDate,
+        createdAt,
+        projectSequence,
+        projectIdentifier
+      } = nextProps.task;
 
-    this.setState({
-      id,
-      summary,
-      acceptanceCriteria,
-      status,
-      priority,
-      dueDate,
-      createdAt,
-      projectSequence,
-      projectIdentifier
-    });
+      this.setState({
+        id,
+        summary,
+        acceptanceCriteria,
+        status,
+        priority,
+        dueDate,
+        createdAt,
+        projectSequence,
+        projectIdentifier
+      });
+    }
   }
 
   componentDidMount() {
     const { taskId } = this.props.match.params;
     if (taskId) {
-      this.setState({ isNew: false });
+      this.setState({ isNew: false, projectSequence: taskId });
       this.props.getTask(
         this.state.projectIdentifier,
         taskId,
@@ -96,14 +98,14 @@ class TaskForm extends Component {
   onSubmit = event => {
     event.preventDefault();
     const task = {
+      id: this.state.id,
       summary: this.state.summary,
       acceptanceCriteria: this.state.acceptanceCriteria,
       status: this.state.status,
       priority: this.state.priority,
       dueDate: this.state.dueDate,
-      id: this.state.id,
-      createdAt: this.state.createdAt,
       projectSequence: this.state.projectSequence,
+      createdAt: this.state.createdAt,
       projectIdentifier: this.state.projectIdentifier
     };
     if (this.state.isNew)
