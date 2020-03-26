@@ -1,6 +1,9 @@
 import React from "react";
 import LinkComponent from "../../ui/Link";
 import Button from "../../ui/Button";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { deleteTask } from "./../../../services/BacklogServices";
 
 const priorities = ["danger", "warning", "primary"];
 
@@ -28,11 +31,13 @@ const Task = props => {
         <Button
           classes="btn btn-danger btn-sm m-2"
           label="Delete"
-          onAction={id => null}
+          onAction={() =>
+            props.deleteTask(task.projectIdentifier, task.projectSequence)
+          }
         />
       </div>
     </div>
   );
 };
 
-export default Task;
+export default connect(null, { deleteTask })(Task);
