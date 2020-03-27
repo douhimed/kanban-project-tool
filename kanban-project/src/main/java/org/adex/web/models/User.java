@@ -34,7 +34,6 @@ public class User implements UserDetails {
     private String password;
 
     @Transient
-    @JsonIgnore
     private String confirmPassword;
 
     private Date createdAt;
@@ -79,4 +78,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

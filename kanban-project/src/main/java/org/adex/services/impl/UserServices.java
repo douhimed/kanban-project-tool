@@ -25,6 +25,7 @@ public class UserServices implements IUserServices {
         try {
             user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
             user.setUsername(user.getUsername());
+            user.setConfirmPassword("");
             return this.userRepository.save(user);
         }catch (Exception e){
             throw  new UsernameAlreadyExistsException("Username : " + user.getUsername() +" already exists");
