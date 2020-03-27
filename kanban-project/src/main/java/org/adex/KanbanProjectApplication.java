@@ -1,6 +1,7 @@
 package org.adex;
 
 import org.adex.repositories.ProjectRepository;
+import org.adex.security.JwtAuthenticationFilter;
 import org.adex.web.models.Backlog;
 import org.adex.web.models.Project;
 import org.springframework.boot.CommandLineRunner;
