@@ -79,7 +79,7 @@ public class ProjectServices implements IProjectServices {
 	}
 
 	@Override
-	public Project findProjectByIdentifier(String projectIdentifier, String projectLeader) {
+	public Project findProjectByIdentifier(String projectIdentifier, String projectLeader) { 
 		Project project = this.findProjectByIdentifier(projectIdentifier);
 		if (!project.getProjectLeader().equals(projectLeader))
 			throw new ProjectNotFoundException("Project not found under this account");
