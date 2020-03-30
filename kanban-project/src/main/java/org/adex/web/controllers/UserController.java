@@ -54,7 +54,6 @@ public class UserController {
         if(errorsOptional.isPresent())
             return errorsOptional.get();
 
-
         Authentication authentication = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = JWT_PREFIX + this.jwtTokenProvider.generateToken(authentication);

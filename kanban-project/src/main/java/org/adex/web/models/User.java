@@ -7,8 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -19,64 +22,67 @@ import java.util.Date;
 @Setter
 public class User implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-    @NotBlank(message = "Username field is required")
-    @Column(unique = true)
-    private String username;
+	@NotBlank(message = "Username field is required")
+	@Column(unique = true)
+	private String username;
 
-    @NotBlank(message = "Please enter your fullname")
-    private String fullName;
+	@NotBlank(message = "Please enter your fullname")
+	private String fullName;
 
-    @NotBlank(message = "Password field is required")
-    private String password;
+	@NotBlank(message = "Password field is required")
+	private String password;
 
-    @Transient
-    private String confirmPassword;
+	@Transient
+	private String confirmPassword;
 
-    private Date createdAt;
-    private Date updatedAt;
+	private Date createdAt;
+	private Date updatedAt;
 
-    @PrePersist
-    protected void onCreate() {
-        this.setCreatedAt(new Date());
-    }
+	@OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
+	private List<Project> projects = new ArrayList<Project>();
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.setUpdatedAt(new Date());
-    }
+	@PrePersist
+	protected void onCreate() {
+		this.setCreatedAt(new Date());
+	}
 
-    @Override
-    @JsonIgnore
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
+	@PreUpdate
+	protected void onUpdate() {
+		this.setUpdatedAt(new Date());
+	}
 
-    @Override
-    @JsonIgnore
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+	@Override
+	@JsonIgnore
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
 
-    @Override
-    @JsonIgnore
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+	@Override
+	@JsonIgnore
+	public boolean isAccountNonExpired() {
+		return true;
+	}
 
-    @Override
-    @JsonIgnore
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+	@Override
+	@JsonIgnore
+	public boolean isAccountNonLocked() {
+		return true;
+	}
 
-    @Override
-    @JsonIgnore
-    public boolean isEnabled() {
-        return true;
-    }
+	@Override
+	@JsonIgnore
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isEnabled() {
+		return true;
+	}
 
 }

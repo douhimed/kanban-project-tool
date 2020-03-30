@@ -1,5 +1,6 @@
 package org.adex.web.controllers;
 
+import java.security.Principal;
 import java.util.Map;
 import java.util.Optional;
 
@@ -27,29 +28,29 @@ public class ProjectController {
 	private IErrorServices errorServices;
 
 	@GetMapping
-	public ResponseEntity<Iterable<Project>> getAll() {
-		return new ResponseEntity<Iterable<Project>>(this.projectServices.getAllProjects(), HttpStatus.OK);
+	public ResponseEntity<Iterable<Project>> getAll(Principal principal) {
+		return new ResponseEntity<Iterable<Project>>(this.projectServices.getAllProjects(principal.getName()), HttpStatus.OK);
 	}
 
 	@PostMapping
-	public ResponseEntity<?> saveNewProject(@Valid @RequestBody Project project, BindingResult result) {
+	public ResponseEntity<?> saveNewProject(@Valid @RequestBody Project project, BindingResult result, Principal principal) {
 
 		Optional<ResponseEntity<Map<String, String>>> errorsOptional = this.errorServices.validate(result);
 		if (errorsOptional.isPresent())
 			return errorsOptional.get();
 
-		return new ResponseEntity<Project>(this.projectServices.saveOrUpdate(project), HttpStatus.CREATED);
+		return new ResponseEntity<Project>(this.projectServices.saveOrUpdate(project, principal.getName()), HttpStatus.CREATED);
 	}
 
 	@GetMapping("{projectIdentifier}")
-	public ResponseEntity<Project> searchProjectById(@PathVariable String projectIdentifier) {
-		return new ResponseEntity<Project>(this.projectServices.findProjectByIdentifier(projectIdentifier),
+	public ResponseEntity<Project> searchProjectById(@PathVariable String projectIdentifier, Principal principal) {
+		return new ResponseEntity<Project>(this.projectServices.findProjectByIdentifier(projectIdentifier, principal.getName()),
 				HttpStatus.OK);
 	}
 
 	@DeleteMapping("{projectIdentifier}")
-	public ResponseEntity<?> deleteByIdentifier(@PathVariable String projectIdentifier) {
-		return new ResponseEntity<Project>(this.projectServices.deleteProjectByIdentifier(projectIdentifier),
+	public ResponseEntity<?> deleteByIdentifier(@PathVariable String projectIdentifier, Principal principal) {
+		return new ResponseEntity<Project>(this.projectServices.deleteProjectByIdentifier(projectIdentifier, principal.getName()),
 				HttpStatus.OK);
 	}
 
