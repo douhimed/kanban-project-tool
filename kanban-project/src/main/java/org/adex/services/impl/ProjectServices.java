@@ -1,6 +1,5 @@
 package org.adex.services.impl;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.adex.repositories.BacklogRepository;
