@@ -28,5 +28,10 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 	public final ResponseEntity<Object> taskNotFoundExceptionHandler(TaskNotFoundException ex, WebRequest request){
 		return new ResponseEntity<Object>(new TaskNotFoundExceptionResponce(ex.getMessage()), HttpStatus.BAD_REQUEST);
 	}
-	
+
+	@ExceptionHandler
+	public final ResponseEntity<Object> emailExistExceptionHandler(UsernameAlreadyExistsException ex, WebRequest request){
+		return new ResponseEntity<Object>(new UsernameAlreadyExistsExceptionResponce(ex.getMessage()), HttpStatus.BAD_REQUEST);
+	}
+
 }

@@ -24,7 +24,7 @@ const Task = props => {
         <h5 className="card-title">{task.summary}</h5>
         <p className="card-text">{task.acceptanceCriteria}</p>
         <LinkComponent
-          classes="btn btn-secondary btn-sm m-2"
+          classes="btn btn-warning btn-sm m-2"
           to={`/tasks/update/${task.projectIdentifier}/${task.projectSequence}`}
           label="Update"
         />

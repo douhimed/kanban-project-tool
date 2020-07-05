@@ -20,7 +20,7 @@ public class Backlog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int PTSequence = 0;
+    private int PTSequence;
     private String projectIdentifier;
     
     @OneToOne(fetch = FetchType.EAGER)
