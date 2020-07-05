@@ -21,37 +21,40 @@ import static org.adex.security.SecurityConstants.JWT_PREFIX;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    private CustomUserDetailsServices customUserDetailsServices;
+	@Autowired
+	private CustomUserDetailsServices customUserDetailsServices;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try {
-            String jwt = this.getTokenFromRequest(request);
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
+		try {
+			String jwt = this.getTokenFromRequest(request);
+			if (StringUtils.hasText(jwt) && this.jwtTokenProvider.validateToken(jwt)) {
+				int userId = this.jwtTokenProvider.getUserIdFromToken(jwt);
+				User user = this.customUserDetailsServices.loadUserById(userId);
 
-            if (StringUtils.hasText(jwt) && this.jwtTokenProvider.validateToken(jwt)) {
-                int userId = this.jwtTokenProvider.getUserIdFromToken(jwt);
-                User user = this.customUserDetailsServices.loadUserById(userId);
+				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null,
+						Collections.emptyList());
 
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
 
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+		} catch (Exception ex) {
+			logger.error("Could not set user authnetication in security context : ", ex);
+		}
 
-        } catch (Exception ex) {
-            logger.error("Could not set user authnetication in security context : ", ex);
-        }
+		filterChain.doFilter(request, response);
+	}
 
-        filterChain.doFilter(request, response);
-    }
-
-    private String getTokenFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader(HEADER_AUTH);
-        return StringUtils.hasText(bearerToken) && bearerToken.startsWith(JWT_PREFIX) ? bearerToken.substring(7, bearerToken.length()) : null;
-    }
+	private String getTokenFromRequest(HttpServletRequest request) {
+		String bearerToken = request.getHeader(HEADER_AUTH);
+		return StringUtils.hasText(bearerToken) && bearerToken.startsWith(JWT_PREFIX)
+				? bearerToken.substring(7, bearerToken.length())
+				: null;
+	}
 
 }
